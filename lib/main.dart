@@ -2,6 +2,7 @@ import './widgets/new_transaction.dart';
 import '../widgets/transactionList.dart';
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
+import '../widgets/chart.dart';
 
 void main() {
   runApp(ExpensePlanner());
@@ -58,6 +59,15 @@ class _HomePageState extends State<HomePage> {
       _userTransactions.add(newTx);
     });
   }
+
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(
+        Duration(days: 7),
+      ),);
+    }).toList();
+  }
+
   void _startNewTransaction(BuildContext ctx) {
     showModalBottomSheet(context: ctx, builder: (_) {
       return GestureDetector(
@@ -85,11 +95,9 @@ class _HomePageState extends State<HomePage> {
         children:  [
           Container(
             width: 400,
-            child: Card(
-              color: Theme.of(context).primaryColor,
-              child: Text("Chart!"),
-              elevation: 5,
-            ),
+            // height: 200,
+            child:
+            Chart(_recentTransactions),
           ),
           TransactionList(_userTransactions),
         ],
