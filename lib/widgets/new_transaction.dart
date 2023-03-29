@@ -10,6 +10,16 @@ class NewTransaction extends StatelessWidget {
 
   NewTransaction(this.AddUserTransaction);
 
+  void submitData() {
+    final enteredTitle = titlecontroller.text;
+    final enteredAmount = double.parse(amountController.text);
+    final enteredId = idController.text;
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || enteredId.isEmpty ) {
+      return;
+    }
+    AddUserTransaction(enteredId,enteredTitle,enteredAmount);
+  }
+
   @override
   Widget build(BuildContext context) {
     return
@@ -23,15 +33,14 @@ class NewTransaction extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextField(decoration: InputDecoration(contentPadding: EdgeInsets.all(5),
-                labelText: "Enter title"),controller: titlecontroller,
+                labelText: "Enter title"),controller: titlecontroller,onSubmitted: (_) => submitData()
             ),
             TextField(decoration: InputDecoration(contentPadding: EdgeInsets.all(5),
-                labelText: "Enter Amount"),controller: amountController,),
+                labelText: "Enter Amount"),controller: amountController,
+                keyboardType: TextInputType.numberWithOptions(),onSubmitted: (_) => submitData()),
             TextField(decoration: InputDecoration(contentPadding: EdgeInsets.all(5),
-                labelText: "Enter id"),controller: idController,),
-            TextButton(onPressed: () {
-              AddUserTransaction(idController.text,titlecontroller.text,double.parse(amountController.text));
-            }, child: Text("Add Transaction",
+                labelText: "Enter id"),controller: idController,onSubmitted: (_) => submitData()),
+            TextButton(onPressed: submitData, child: Text("Add Transaction",
               style: TextStyle(color: Colors.purpleAccent, fontWeight: FontWeight.bold, fontSize: 15),))
           ],
         )

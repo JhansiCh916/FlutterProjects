@@ -47,7 +47,7 @@ class TransactionList extends StatelessWidget {
                           Border.all(color: Colors.greenAccent, width: 0.8)),
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        "\$" + transactions[index].amount.toString(),
+                        "\$" + transactions[index].amount.toStringAsFixed(2),
                         style: TextStyle(fontWeight: FontWeight.w800),
                       ),
                     )
