@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function deleteTransaction;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.deleteTransaction);
 
   @override
   Widget build(BuildContext context) {
@@ -22,48 +23,20 @@ class TransactionList extends StatelessWidget {
         ],
       ): ListView.builder(
         itemBuilder: (ctx, index) {
-          return Container(
-            width: 400,
-            height: 100,
-            child: Card(
-              child: Container(
-                width: 200,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            transactions[index].title,
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                              "Date " + DateFormat("dd-mm-yyyy").format(transactions[index].date)),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 60),
-                      decoration: BoxDecoration(
-                          border:
-                          Border.all(
-                              color: Theme.of(context).primaryColor,
-                              width: 0.8)),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        "\$" + transactions[index].amount.toStringAsFixed(2),
-                        style: TextStyle(fontWeight: FontWeight.w800),
-                      ),
-                    )
-                  ],
+          return Card(
+            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            elevation: 5,
+            child: ListTile(
+              leading: CircleAvatar(
+                radius: 30,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('\$${transactions[index].amount}'),
                 ),
               ),
+              title: Text(transactions[index].title, style: Theme.of(context).textTheme.titleMedium,),
+              subtitle: Text(DateFormat.yMMMd().format(transactions[index].date),),
+              trailing: IconButton(icon: Icon(Icons.delete),color: Colors.red,onPressed: () => deleteTransaction(transactions[index].id),),
             ),
           );
         },

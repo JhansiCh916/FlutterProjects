@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
 
@@ -11,22 +12,33 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titlecontroller = TextEditingController();
-
-  final amountController = TextEditingController();
-
+  final _titlecontroller = TextEditingController();
+  final _amountController = TextEditingController();
   final idController = TextEditingController();
+  DateTime? _selectedDate;
 
-  void submitData() {
-    final enteredTitle = titlecontroller.text;
-    final enteredAmount = double.parse(amountController.text);
+  void _submitData() {
+    final enteredTitle = _titlecontroller.text;
+    final enteredAmount = double.parse(_amountController.text);
     final enteredId = idController.text;
-    if (enteredTitle.isEmpty || enteredAmount <= 0 || enteredId.isEmpty ) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || enteredId.isEmpty || _selectedDate == null ) {
       return;
     }
-    widget.AddUserTransaction(enteredId,enteredTitle,enteredAmount);
+    widget.AddUserTransaction(enteredId,enteredTitle,enteredAmount,_selectedDate);
     
     Navigator.of(context).pop();
+  }
+
+  void _showdatePicker() {
+    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2016), lastDate: DateTime.now()
+    ).then((selectedDate) {
+      if (selectedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = selectedDate;
+      });
+    });
   }
 
   @override
@@ -42,15 +54,25 @@ class _NewTransactionState extends State<NewTransaction> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextField(decoration: InputDecoration(contentPadding: EdgeInsets.all(5),
-                labelText: "Enter title"),controller: titlecontroller,onSubmitted: (_) => submitData()
+                labelText: "Enter title"),controller: _titlecontroller,onSubmitted: (_) => _submitData()
             ),
             TextField(decoration: InputDecoration(contentPadding: EdgeInsets.all(5),
-                labelText: "Enter Amount"),controller: amountController,
-                keyboardType: TextInputType.numberWithOptions(),onSubmitted: (_) => submitData()),
+                labelText: "Enter Amount"),controller: _amountController,
+                keyboardType: TextInputType.numberWithOptions(),onSubmitted: (_) => _submitData()),
             TextField(decoration: InputDecoration(contentPadding: EdgeInsets.all(5),
-                labelText: "Enter id"),controller: idController,onSubmitted: (_) => submitData()),
-            TextButton(onPressed: submitData, child: Text("Add Transaction",
-              style: Theme.of(context).textTheme.titleMedium,))
+                labelText: "Enter id"),controller: idController,onSubmitted: (_) => _submitData()),
+            
+            Container(
+                height: 60,
+                child: Row(children: [
+                  Expanded(child: Text(_selectedDate == null ? "No date chosen" : DateFormat.yMd().format(_selectedDate ?? DateTime.now()))),
+                  TextButton(onPressed: _showdatePicker, child: Text("Choose date", style: Theme.of(context).textTheme.titleMedium,))
+                ],),
+              ),
+            
+            ElevatedButton(onPressed: _submitData, child: Text("Add Transaction",
+              style: TextStyle(backgroundColor: Theme.of(context).primaryColor, color: Colors.white),),
+            )
           ],
         )
     )

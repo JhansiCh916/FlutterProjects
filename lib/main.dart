@@ -21,6 +21,7 @@ class ExpensePlanner extends StatelessWidget {
               titleMedium: TextStyle(
                 fontFamily: "Quicksand",
                 fontSize: 20,
+                fontWeight: FontWeight.bold,
               )
           ),
         fontFamily: "Quicksand",
@@ -52,9 +53,9 @@ class _HomePageState extends State<HomePage> {
     Transaction("t3", 250, "cups", DateTime.now())
   ];
 
-  void _addTransactions( String id, String title, double amount) {
+  void _addTransactions( String id, String title, double amount, DateTime chosenDate) {
     final newTx = Transaction(id, amount,
-        title, DateTime.now());
+        title, chosenDate);
     setState(() {
       _userTransactions.add(newTx);
     });
@@ -79,6 +80,16 @@ class _HomePageState extends State<HomePage> {
     },);
   }
 
+  void delTransaction(String id) {
+
+    setState(() {
+      _userTransactions.removeWhere((tx) {
+        return tx.id == id;
+      });
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +110,7 @@ class _HomePageState extends State<HomePage> {
             child:
             Chart(_recentTransactions),
           ),
-          TransactionList(_userTransactions),
+          TransactionList(_userTransactions, delTransaction),
         ],
       ),
       ),
