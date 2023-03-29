@@ -16,6 +16,21 @@ class ExpensePlanner extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
         accentColor: Colors.amberAccent,
+          textTheme: ThemeData.light().textTheme.copyWith(
+              titleMedium: TextStyle(
+                fontFamily: "Quicksand",
+                fontSize: 20,
+              )
+          ),
+        fontFamily: "Quicksand",
+          appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            titleMedium: TextStyle(
+              fontFamily: "Quicksand",
+              fontSize: 28,
+            )
+          )
+      )
       ),
       home: HomePage(),
       );

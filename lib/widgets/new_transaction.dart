@@ -50,7 +50,7 @@ class _NewTransactionState extends State<NewTransaction> {
             TextField(decoration: InputDecoration(contentPadding: EdgeInsets.all(5),
                 labelText: "Enter id"),controller: idController,onSubmitted: (_) => submitData()),
             TextButton(onPressed: submitData, child: Text("Add Transaction",
-              style: TextStyle(color: Colors.purpleAccent, fontWeight: FontWeight.bold, fontSize: 15),))
+              style: Theme.of(context).textTheme.titleMedium,))
           ],
         )
     )
