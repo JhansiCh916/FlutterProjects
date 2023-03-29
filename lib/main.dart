@@ -13,6 +13,10 @@ class ExpensePlanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Expense Planner",
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+        accentColor: Colors.amberAccent,
+      ),
       home: HomePage(),
       );
   }
@@ -41,7 +45,12 @@ class _HomePageState extends State<HomePage> {
   }
   void _startNewTransaction(BuildContext ctx) {
     showModalBottomSheet(context: ctx, builder: (_) {
-      return NewTransaction(_addTransactions);
+      return GestureDetector(
+        onTap: () {},
+        child: NewTransaction(_addTransactions),
+        behavior: HitTestBehavior.opaque,
+      );
+
     },);
   }
 
@@ -62,7 +71,7 @@ class _HomePageState extends State<HomePage> {
           Container(
             width: 400,
             child: Card(
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               child: Text("Chart!"),
               elevation: 5,
             ),
