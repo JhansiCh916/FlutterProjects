@@ -18,7 +18,6 @@ class Chart extends StatelessWidget {
             recentTrasactions[i].date.month == weekDay.month &&
             recentTrasactions[i].date.year == weekDay.year) {
           totalSum += recentTrasactions[i].amount;
-
         }
       }
       return {"day": DateFormat.E().format(weekDay).substring(0,1), "amount" : totalSum};
@@ -33,19 +32,22 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      margin: EdgeInsets.all(10),
-      child: Container(
-        padding: EdgeInsets.all(15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      child: Card(
+        elevation: 5,
+        margin: EdgeInsets.all(10),
+        child: Container(
+          padding: EdgeInsets.all(15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
 
-          children: groupedTrasactions.map((data) {
+            children: groupedTrasactions.map((data) {
 
-            return Flexible(fit: FlexFit.tight,
-                child: ChartBar(data["day"].toString(), (data["amount"] as double), maxSpending == 0 ? 0.0 : (data["amount"] as double) / maxSpending));
-          }).toList(),
+              return Flexible(fit: FlexFit.tight,
+                  child: ChartBar(data["day"].toString(), (data["amount"] as double), maxSpending == 0 ? 0.0 : (data["amount"] as double) / maxSpending));
+            }).toList(),
+          ),
         ),
       ),
     );
